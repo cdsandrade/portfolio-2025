@@ -1,0 +1,20 @@
+{
+  "name": "portfolio-2025",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "Chris Andrade <cdsandrade@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^5.3.3",
+    "uuid": "^11.1.0",
+    "vm2": "^3.9.19"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
