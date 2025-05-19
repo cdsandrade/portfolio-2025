@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [ $default-branch ] # [ "main" ]
+  pull_request:
+    branches: [ $default-branch ] # [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x, 22.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --if-present
+
+      - name: Run Unit Tests
+        run: npm run test:unit
+
+      - name: Start Service (for Integration Tests)
+        run: npm run start:ci
+
+      - name: Run Integration Tests
+        run: npm run test:integration
+
+      - name: Teardown Service
+        run: npm run stop

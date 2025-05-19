@@ -4,9 +4,9 @@ const util = require('util');
 
 const { v7 } = require('uuid')
 // import { v7 } from 'uuid';
+const { zettel_to_epoch } = require('./lib/utils')
 
-
-fastify.post('/uuidv7', {
+fastify.post('/epoch-to-uuid', {
   schema: {
     body: {
       type: 'object',
@@ -18,15 +18,37 @@ fastify.post('/uuidv7', {
   handler: async (request, reply) => {
     try {
       const { epoch_timestamp } = request.body;
-      let uuid
 
       if (epoch_timestamp) {
-        uuid = v7({ msecs: epoch_timestamp })
+        return { message: 'UUID generated successfully with Epoch timestamp!', uuid: v7({ msecs: epoch_timestamp }) }
       } else {
-        uuid = v7({ msecs: Date.now() })
+        return { message: 'UUID generated successfully!', uuid: v7({ msecs: Date.now() }) }
       }
+    } catch (err) {
+      return reply.code(400).send({ error: `Execution failed: ${err.message}` })
+    }
+  }
+})
 
-      return { message: 'UUID generated successfully!', uuid }
+fastify.post('/zettel-to-uuid', {
+  schema: {
+    body: {
+      type: 'object',
+      properties: {
+        zettel_id: { type: 'string' }
+      }
+    }
+  },
+  handler: async (request, reply) => {
+    try {
+      const { zettel_id } = request.body;
+      
+
+      if (zettel_id) {
+        return { message: 'UUID generated successfully with Zettel ID!', uuid: v7({ msecs: zettel_to_epoch(zettel_id) }) }
+      } else {
+        return { message: 'UUID generated successfully!', uuid: v7({ msecs: Date.now() }) }
+      }
     } catch (err) {
       return reply.code(400).send({ error: `Execution failed: ${err.message}` })
     }
