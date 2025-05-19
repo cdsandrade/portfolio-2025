@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - '**.js'
+      - '.github/workflows/**.yml'
   pull_request:
     branches:
       - master
