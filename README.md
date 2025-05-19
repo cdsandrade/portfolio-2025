@@ -24,9 +24,9 @@
 
 ## Phase 3: CI/CD Integration
 
-- [ ] Add GitHub Actions pipeline (or GitLab/Jenkins).
+- [x] Add GitHub Actions pipeline (or GitLab/Jenkins).
 
-- [ ] Trigger gauntlet on PR creation and code pushes.
+- [x] Trigger gauntlet on PR creation and code pushes.
 
 - [ ] Add Status Badges (Red/Green, Test Coverage).
 
