@@ -6,6 +6,8 @@ const { v7 } = require('uuid')
 // import { v7 } from 'uuid';
 const { zettel_to_epoch } = require('./lib/utils')
 
+fastify.get('/health', async () => ({ status: 'ok' }));
+
 fastify.post('/epoch-to-uuid', {
   schema: {
     body: {

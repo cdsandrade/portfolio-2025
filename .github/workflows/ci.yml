@@ -36,7 +36,20 @@ jobs:
         run: npm run test:unit
 
       - name: Start Service (for Integration Tests)
-        run: npm run start:ci
+        run: |
+          npm run start:ci
+          sleep 1
+          echo "Waiting for service to be ready..."
+          for i in {1..10}; do
+            if curl -s http://localhost:3000/health; then
+              echo "Service is up!"
+              exit 0
+            fi
+            echo "Service not ready yet, retrying in 2s..."
+            sleep 2
+          done
+          echo "Service failed to start in time."
+          exit 1
 
       - name: Run Integration Tests
         run: npm run test:integration
