@@ -1,6 +1,7 @@
 const test = require('tape')
 const { VM } = require('vm2')
 const { zettel_to_epoch } = require('../../lib/utils')
+const { DateTime } = require('luxon')
 
 test('Sandbox executes simple math correctly', (t) => {
   const vm = new VM({ timeout: 1000 })
@@ -69,9 +70,17 @@ test('Invalid date - February 30th', t => {
   t.end()
 })
 
-test('DST Boundary - ET Fall Back Hour', t => {
+// test('DST Boundary - ET Fall Back Hour', t => {
+//   const ts = zettel_to_epoch('202411030159')
+//   const date = new Date(ts)
+//   t.equal(date.getHours(), 1, 'Should parse hour correctly at DST boundary')
+//   t.end()
+// })
+
+test('DST Boundary - ET Fall Back Hour (agnostic)', t => {
   const ts = zettel_to_epoch('202411030159')
-  const date = new Date(ts)
-  t.equal(date.getHours(), 1, 'Should parse hour correctly at DST boundary')
+  const dt = DateTime.fromMillis(ts, { zone: 'America/New_York' })
+
+  t.equal(dt.hour, 1, 'Should parse hour correctly at DST boundary in ET')
   t.end()
 })
