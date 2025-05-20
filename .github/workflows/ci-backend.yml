@@ -6,8 +6,12 @@ on:
       - master
     paths:
       - 'backend/.github/workflows/**.yml'
-      - 'backend/**.js'
+      - 'backend/ecosystem.config.js'
       - 'backend/eslint.config.mjs'
+      - 'backend/src/**.js'
+      - 'backend/tests/**.js'
+    # paths-ignore:
+    #    - 'backend/scripts/**'
   pull_request:
     branches:
       - master
