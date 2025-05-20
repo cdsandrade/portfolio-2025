@@ -2,14 +2,14 @@ const { DateTime } = require('luxon')
 const cityTimezones = require('city-timezones')
 
 const zettel_to_epoch = (x, c) => {
-  const regex = /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?$/;
-  const match = x.match(regex);
+  const regex = /^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})?$/
+  const match = x.match(regex)
 
   if (!match) {
-    throw new Error(`Invalid Zettel ID format: ${x}`);
+    throw new Error(`Invalid Zettel ID format: ${x}`)
   }
 
-  const [ , year, month, day, hour, minute, second = '00' ] = match;
+  const [ , year, month, day, hour, minute, second = '00' ] = match
   let tz = ''
 
   // Sanitize empty string to default

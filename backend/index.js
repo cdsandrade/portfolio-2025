@@ -1,11 +1,11 @@
-const fastify = require('fastify')({ logger: true });
-const { VM } = require('vm2');
-const util = require('util');
+const fastify = require('fastify')({ logger: true })
+const { VM } = require('vm2')
+const util = require('util')
 
 const { v7 } = require('uuid')
 const { zettel_to_epoch } = require('./lib/utils')
 
-fastify.get('/health', async () => ({ status: 'ok' }));
+fastify.get('/health', async () => ({ status: 'ok' }))
 
 fastify.post('/epoch-to-uuid', {
   schema: {
@@ -18,7 +18,7 @@ fastify.post('/epoch-to-uuid', {
   },
   handler: async (request, reply) => {
     try {
-      const { epoch_timestamp } = request.body;
+      const { epoch_timestamp } = request.body
 
       if (epoch_timestamp) {
         return { message: 'UUID generated successfully with Epoch timestamp!', uuid: v7({ msecs: epoch_timestamp }) }
@@ -43,7 +43,7 @@ fastify.post('/zettel-to-uuid', {
   },
   handler: async (request, reply) => {
     try {
-      const { zettel_id, city } = request.body;
+      const { zettel_id, city } = request.body
       
 
       if (zettel_id) {
@@ -68,7 +68,7 @@ fastify.post('/submit', {
     },
   },
   handler: async (request, reply) => {
-    const { code } = request.body;
+    const { code } = request.body
 
     // Example of safe globals (read-only Math, mock console)
     const vm = new VM({
@@ -77,21 +77,21 @@ fastify.post('/submit', {
         Math,
         console: { log: (...args) => fastify.log.info('[Sandbox] ' + util.format(...args)) },
       },
-    });
+    })
 
     try {
-      const result = vm.run(code);
-      return { message: 'Code executed successfully!', result };
+      const result = vm.run(code)
+      return { message: 'Code executed successfully!', result }
     } catch (err) {
-      return reply.code(400).send({ error: `Execution failed: ${err.message}` });
+      return reply.code(400).send({ error: `Execution failed: ${err.message}` })
     }
   },
-});
+})
 
 fastify.listen({ port: 3000 }, (err, address) => {
   if (err) {
-    fastify.log.error(err);
-    process.exit(1);
+    fastify.log.error(err)
+    process.exit(1)
   }
-  fastify.log.info(`Server running at ${address}`);
-});
+  fastify.log.info(`Server running at ${address}`)
+})
