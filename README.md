@@ -1,44 +1,67 @@
 # portfolio-2025
 
+A self-dogfooding, fully automated testing gauntlet project. Designed to evolve from simple code evaluation to a full production-grade CI/CD pipeline with modular quality gates and automated enforcement.
+
 ## Phase 1: Core Testing Engine (MVP)
 
-- [x] Create a simple CLI or web API to accept code input.
+- [x] Create a simple CLI or web API to accept code input (Fastify + `vm2`).
 
-- [x] Implement Unit Testing (start with bash/BATS or JS/tape for familiarity).
+- [x] Implement Unit Testing (JS/tape).
 
-- [x] Build Red/Green Feedback Output (CLI colors or simple HTML report).
+- [x] Build Red/Green Feedback Output (via CLI and CI pipeline results).
 
-- [x] Optional: Add JSON output for future API consumption.
+- [x] Optional: JSON output for future API consumption.
 
 ## Phase 2: Expand Gauntlet
 
-- [x] Integration Tests: Add simple dependency checks or API call validations.
+- [x] Integration Tests: Verify API endpoints with real HTTP calls.
 
-- [ ] E2E Tests: Simulate real-world workflows (use a sample app).
+- [ ] E2E Tests: Simulate full real-world workflows (e.g., UUID generation through API + result validation).
 
-- [ ] Security Tests: Integrate Snyk API or trivy for container scans.
+- [ ] Security Checks:
 
-- [ ] Performance Tests: Add hey, wrk, or k6 for API performance benchmarks.
+  - [x] Integrate ESLint for static analysis.
 
-- [ ] Track each test result clearly in the output.
+  - [ ] Add Snyk or Trivy for dependency and container scans.
+
+- [ ] Performance Benchmarks:
+
+  - [ ] Add `autocannon`, `wrk`, or `k6` to measure API response times under load.
+
+  - [ ] Define baseline thresholds and fail builds on degradation.
+
+- [ ] Enhance Reporting:
+
+  - [ ] Track and output test results in JSON for easy dashboard integration.
+
+  - [ ] (Optional) Implement a basic CLI/dashboard summary.
 
 ## Phase 3: CI/CD Integration
 
-- [x] Add GitHub Actions pipeline (or GitLab/Jenkins).
+- [x] Add GitHub Actions pipeline with matrix testing across Node.js versions.
 
 - [x] Trigger gauntlet on PR creation and code pushes.
 
-- [ ] Add Status Badges (Red/Green, Test Coverage).
+- [ ] Add Status Badges (Build Status, Test Coverage) to README.
 
-- [ ] Implement Slack/Email/Webhook Notifications for failures.
+- [ ] Implement Notifications:
+
+  - [ ] Slack, Email, or Webhook alerts for failed pipelines.
 
 ## Phase 4: Live Dogfooding
 
-- [ ] Build or migrate a real webapp to be fully maintained through this pipeline.
+- [ ] Build or migrate a real web app to be fully maintained through this pipeline.
 
-- [ ] Infrastructure-as-Code (Terraform or Pulumi?) for deploy environments.
+- [ ] Infrastructure-as-Code (Terraform or Pulumi) for deployment environments.
 
-- [ ] Bonus: Add automatic rollback if a deploy fails gauntlet post-release.
+- [ ] Bonus: Add automatic rollback if a deployment fails post-gauntlet.
 
-- [ ] Bonus: Add a “Code Quality Dashboard” with history and visualizations.
+- [ ] Bonus: Build a “Code Quality Dashboard” visualizing historical pipeline health, performance benchmarks, and test coverage.
 
+## Stretch Goals (Nice-to-Haves)
+
+- [ ] Add Docker and Kubernetes support for on-demand execution environments.
+
+- [ ] Implement Test-Driven Infrastructure concepts.
+
+- [ ] Explore additional language sandboxes beyond JavaScript (e.g., Python, WASM).

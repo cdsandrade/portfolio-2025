@@ -3,7 +3,6 @@ const { VM } = require('vm2');
 const util = require('util');
 
 const { v7 } = require('uuid')
-// import { v7 } from 'uuid';
 const { zettel_to_epoch } = require('./lib/utils')
 
 fastify.get('/health', async () => ({ status: 'ok' }));
@@ -37,19 +36,20 @@ fastify.post('/zettel-to-uuid', {
     body: {
       type: 'object',
       properties: {
-        zettel_id: { type: 'string' }
+        zettel_id: { type: 'string' },
+        city: { type: 'string' }
       }
     }
   },
   handler: async (request, reply) => {
     try {
-      const { zettel_id } = request.body;
+      const { zettel_id, city } = request.body;
       
 
       if (zettel_id) {
-        return { message: 'UUID generated successfully with Zettel ID!', uuid: v7({ msecs: zettel_to_epoch(zettel_id) }) }
+        return { message: 'UUID generated successfully with Zettel ID!', uuid: v7({ msecs: zettel_to_epoch(zettel_id, city) }) }
       } else {
-        return { message: 'UUID generated successfully!', uuid: v7({ msecs: Date.now() }) }
+        return { message: 'UUID generated successfully!', uuid: v7({ msecs: Date.now(), city }) }
       }
     } catch (err) {
       return reply.code(400).send({ error: `Execution failed: ${err.message}` })
@@ -75,11 +75,7 @@ fastify.post('/submit', {
       timeout: 1000,
       sandbox: {
         Math,
-        // console: { log: (...args) => fastify.log.info('[Sandbox]', ...args) },
-        // console: { log: (...args) => fastify.log.info('[Sandbox]', ...args.join(' ')) },
         console: { log: (...args) => fastify.log.info('[Sandbox] ' + util.format(...args)) },
-        // console: { log: (...args) => fastify.log.info('[Sandbox]', 'foo', 'bar') },
-        // getEnvVar: (name) => process.env[name], // BAD IDEA: Demo only!
       },
     });
 
@@ -99,18 +95,3 @@ fastify.listen({ port: 3000 }, (err, address) => {
   }
   fastify.log.info(`Server running at ${address}`);
 });
-
-// ---
-
-// const PORT = 3000
-
-// const start = async () => {
-//   try {
-//     await fastify.listen(PORT)
-//   } catch(err) {
-//     fastify.log.error(err)
-//     process.exit(1)
-//   }
-// }
-
-// start()

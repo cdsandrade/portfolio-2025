@@ -1,16 +1,17 @@
 const test = require('tape');
 
-test('POST /epoch-to-uuid returns valid UUID', async (t) => {
-  const response = await fetch('http://localhost:3000/epoch-to-uuid', {
+test('POST /submit returns ...', async (t) => {
+  const response = await fetch('http://localhost:3000/submit', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ epoch_timestamp: '1727287830000' })
+    body: JSON.stringify({ code: '2 + 2' })
   })
 
   const data = await response.json();
   t.equal(response.status, 200, 'Should return HTTP 200')
-  t.ok(data.uuid, 'Response should include a UUID')
+  t.ok(data.result, 'Response should include a result')
+  t.deepEquals(data.result, 4, 'Response should return the proper result')
   t.end()
 })

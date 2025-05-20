@@ -21,15 +21,15 @@ test('Sandbox should throw on bad code', (t) => {
 })
 
 test('zettel_to_epoch() should return proper Unix timestamp from Zettel ID', (t) => {
-  expected = 1737392400000
-  actual = zettel_to_epoch("202501201200")
+  let expected = 1737392400000
+  let actual = zettel_to_epoch("202501201200")
   t.deepEquals(actual, expected, 'zettel ID "202501201200" returns 1737392400000')
   t.end()
 })
 
 test('zettel_to_epoch() should return proper Unix timestamp from Zettel ID (with seconds)', (t) => {
-  expected = 1737392400000
-  actual = zettel_to_epoch("20250120120000")
+  let expected = 1737392400000
+  let actual = zettel_to_epoch("20250120120000")
   t.deepEquals(actual, expected, 'zettel ID "20250120120000" returns 1737392400000')
   t.end()
 })
@@ -82,5 +82,12 @@ test('DST Boundary - ET Fall Back Hour (agnostic)', t => {
   const dt = DateTime.fromMillis(ts, { zone: 'America/New_York' })
 
   t.equal(dt.hour, 1, 'Should parse hour correctly at DST boundary in ET')
+  t.end()
+})
+
+test('Test invalid city', t => {
+  const ts = zettel_to_epoch('202501201200', 'madeup')
+
+  t.deepEquals(ts, 1737374400000, 'Response returns timestamp for UTC')
   t.end()
 })

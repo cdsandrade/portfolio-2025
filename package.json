@@ -7,6 +7,8 @@
     "dev": "pm2 start ecosystem.config.js --only api-app --watch",
     "start:ci": "pm2 start index.js --name api-app",
     "stop": "pm2 stop api-app && pm2 delete api-app",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "tape test/unit/**/*.test.js",
     "test:integration": "tape test/integration/**/*.test.js"
@@ -21,6 +23,9 @@
     "vm2": "^3.9.19"
   },
   "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "eslint": "^9.27.0",
+    "globals": "^16.1.0",
     "pm2": "^6.0.6",
     "tape": "^5.9.0"
   }
