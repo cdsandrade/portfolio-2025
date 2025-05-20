@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'backend/.github/workflows/**.yml'
+      - '.github/workflows/ci-backend.yml'
       - 'backend/ecosystem.config.js'
       - 'backend/eslint.config.mjs'
       - 'backend/src/**.js'
