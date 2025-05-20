@@ -1,13 +1,13 @@
-name: CI
+name: CI (backend)
 
 on:
   push:
     branches:
       - master
     paths:
-      - '**.js'
-      - '.github/workflows/**.yml'
-      - 'eslint.config.mjs'
+      - 'backend/.github/workflows/**.yml'
+      - 'backend/**.js'
+      - 'backend/eslint.config.mjs'
   pull_request:
     branches:
       - master
@@ -15,6 +15,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./backend
 
     strategy:
       matrix:
