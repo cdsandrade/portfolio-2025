@@ -1,7 +1,7 @@
 const test = require('tape')
 
 test('POST /submit returns ...', async (t) => {
-  const response = await fetch('http://localhost:3000/submit', {
+  const response = await fetch('http://localhost:3000/api/submit', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

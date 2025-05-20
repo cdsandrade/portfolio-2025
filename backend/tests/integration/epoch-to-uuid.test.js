@@ -1,7 +1,7 @@
 const test = require('tape')
 
 test('POST /epoch-to-uuid returns valid UUID', async (t) => {
-  const response = await fetch('http://localhost:3000/epoch-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/epoch-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ test('POST /epoch-to-uuid returns valid UUID', async (t) => {
 })
 
 test('POST /epoch-to-uuid returns valid UUID', async (t) => {
-  const response = await fetch('http://localhost:3000/epoch-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/epoch-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

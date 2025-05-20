@@ -1,7 +1,8 @@
 const test = require('tape')
 const { VM } = require('vm2')
-const { zettel_to_epoch } = require('../../lib/utils')
 const { DateTime } = require('luxon')
+
+const { zettel_to_epoch } = require('./utils')
 
 test('Sandbox executes simple math correctly', (t) => {
   const vm = new VM({ timeout: 1000 })

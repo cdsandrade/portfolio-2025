@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "pm2 start ecosystem.config.js --only api-app --watch",
-    "start:ci": "pm2 start index.js --name api-app",
-    "stop": "pm2 stop api-app && pm2 delete api-app",
+    "dev": "pm2 start ecosystem.config.js --only api --watch",
+    "start:ci": "pm2 start ./src/api.js --name api",
+    "stop": "pm2 stop api && pm2 delete api",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "test": "npm run test:unit && npm run test:integration",
-    "test:unit": "tape test/unit/**/*.test.js",
-    "test:integration": "tape test/integration/**/*.test.js"
+    "test:unit": "tape src/**/*.test.js",
+    "test:integration": "tape tests/integration/**/*.test.js"
   },
   "author": "Chris Andrade <cdsandrade@gmail.com>",
   "license": "ISC",

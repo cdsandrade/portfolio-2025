@@ -1,7 +1,7 @@
 const test = require('tape')
 
 test('POST /zettel-to-uuid returns valid UUID', async (t) => {
-  const response = await fetch('http://localhost:3000/zettel-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/zettel-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ test('POST /zettel-to-uuid returns valid UUID', async (t) => {
 })
 
 test('POST /zettel-to-uuid returns valid UUID with empty city', async (t) => {
-  const response = await fetch('http://localhost:3000/zettel-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/zettel-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ test('POST /zettel-to-uuid returns valid UUID with empty city', async (t) => {
 })
 
 test('POST /zettel-to-uuid returns valid UUID for Reykjavik', async (t) => {
-  const response = await fetch('http://localhost:3000/zettel-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/zettel-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ test('POST /zettel-to-uuid returns valid UUID for Reykjavik', async (t) => {
 })
 
 test('POST /zettel-to-uuid returns valid UUID for UTC', async (t) => {
-  const response = await fetch('http://localhost:3000/zettel-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/zettel-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ test('POST /zettel-to-uuid returns valid UUID for UTC', async (t) => {
 })
 
 test('POST /zettel-to-uuid returns UTC on invalid city', async (t) => {
-  const response = await fetch('http://localhost:3000/zettel-to-uuid', {
+  const response = await fetch('http://localhost:3000/api/zettel-to-uuid', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
