@@ -1,0 +1,72 @@
+name: Performance
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'backend/src/**'
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./backend
+
+    strategy:
+      matrix:
+        target:
+          - name: health
+            url: http://localhost:3000/api/health
+
+          - name: submit
+            url: http://localhost:3000/api/submit
+            method: POST
+            connections: 100
+            duration: 10
+            headers: '{"Content-Type": "application/json"}'
+            body: '{"code": "(20 + 1) * 2"}'
+
+          - name: epoch-to-uuid
+            url: http://localhost:3000/api/epoch-to-uuid
+            method: POST
+            connections: 100
+            duration: 10
+            headers: '{"Content-Type": "application/json"}'
+            body: '{"epoch_timestamp": ""}'
+
+          - name: zettel-to-uuid
+            url: http://localhost:3000/api/zettel-to-uuid
+            method: POST
+            connections: 100
+            duration: 10
+            headers: '{"Content-Type": "application/json"}'
+            body: '{"epoch_timestamp": ""}'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Spin up Service (for Performance Tests)
+        run: npm run start:ci && sleep 5
+
+      - name: Run performance test (${{ matrix.target.name }})
+        run: |
+          echo "=> Running autocannon test for ${{ matrix.target.name }}"
+          node tests/perf/benchmark.js \
+            "${{ matrix.target.url }}" \
+            "${{ matrix.target.connections }}" \
+            "${{ matrix.target.duration }}" \
+            "${{ matrix.target.method }}" \
+            '${{ matrix.target.headers }}' \
+            '${{ matrix.target.body }}'
