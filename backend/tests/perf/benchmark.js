@@ -14,13 +14,13 @@ const run = (opts) => new Promise((resolve, reject) => {
 
 ;(async () => {
   const [,, url, method, headersJson, body, connections, duration] = process.argv
-  const headers = JSON.parse(headersJson)
+  const headers = (headersJson) ? JSON.parse(headersJson) : null
 
   console.log(`-> ${method} ${url}`)
   const result = await run({
     url,
     method: method || 'GET',
-    headers: headers || undefined,
+    headers: headers || undefined, // JSON.parse(headersJson) || undefined,
     body: body || undefined,
     connections: Number(connections) || 100,
     duration: Number(duration) || 10,
