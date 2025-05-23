@@ -4,11 +4,13 @@ on:
   pull_request:
     branches:
       - master
-      - 'feature/*'
     paths:
       - '.github/workflows/perf.yml'
       - 'backend/src/**'
       - 'backend/tests/perf/**'
+  # push:
+  #   branches:
+  #     -'feature/*'
 
 jobs:
   perf:
