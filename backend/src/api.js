@@ -1,4 +1,16 @@
-const fastify = require('fastify')({ logger: true })
+const fastify = require('fastify')({
+  logger: true,
+  ajv: {
+    customOptions: {
+      jsonPointers: true,
+      // ⚠ Warning: Enabling this option may lead to this security issue https://www.cvedetails.com/cve/CVE-2020-8192/
+      allErrors: true
+    },
+    plugins: [
+      require('ajv-errors')
+    ]
+  }
+})
 
 fastify.register(require('./routes'))
 
