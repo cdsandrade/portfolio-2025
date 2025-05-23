@@ -6,15 +6,20 @@ module.exports = async (fastify) => {
     schema: {
       body: {
         type: 'object',
-        required: ['code'],
         properties: {
           code: { type: 'string', minLength: 1 },
         },
+        required: ['code'],
+        errorMessage: {
+          required: {
+            code: 'Requires JS code or expression'
+          }
+        }
       },
     },
     handler: async (request, reply) => {
       const { code } = request.body
-  
+
       // Example of safe globals (read-only Math, mock console)
       const vm = new VM({
         timeout: 1000,
@@ -23,7 +28,7 @@ module.exports = async (fastify) => {
           console: { log: (...args) => fastify.log.info('[Sandbox] ' + util.format(...args)) },
         },
       })
-  
+
       try {
         const result = vm.run(code)
         return { message: 'Code executed successfully!', result }

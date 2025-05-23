@@ -5,7 +5,12 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/perf.yml'
       - 'backend/src/**'
+      - 'backend/tests/perf/**'
+  # push:
+  #   branches:
+  #     -'feature/*'
 
 jobs:
   perf:
@@ -65,8 +70,8 @@ jobs:
           echo "=> Running autocannon test for ${{ matrix.target.name }}"
           node tests/perf/benchmark.js \
             "${{ matrix.target.url }}" \
-            "${{ matrix.target.connections }}" \
-            "${{ matrix.target.duration }}" \
             "${{ matrix.target.method }}" \
             '${{ matrix.target.headers }}' \
-            '${{ matrix.target.body }}'
+            '${{ matrix.target.body }}' \
+            "${{ matrix.target.connections }}" \
+            "${{ matrix.target.duration }}"
