@@ -12,6 +12,7 @@ const fastify = require('fastify')({
   }
 })
 
+// Use route aggregator
 fastify.register(require('./routes'))
 
 fastify.listen({ port: 3000 }, (err, address) => {

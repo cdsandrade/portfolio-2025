@@ -1,5 +1,6 @@
 const autocannon = require('autocannon')
 
+// Promisify autocannon instance for the await needed for results + throw
 const run = (opts) => new Promise((resolve, reject) => {
   const instance = autocannon(opts, (err, res) => {
     if (err) return reject(err)
