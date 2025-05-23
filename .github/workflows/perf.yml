@@ -72,6 +72,6 @@ jobs:
             "${{ matrix.target.url }}" \
             "${{ matrix.target.method }}" \
             '${{ matrix.target.headers }}' \
-            '${{ matrix.target.body }}'
+            '${{ matrix.target.body }}' \
             "${{ matrix.target.connections }}" \
             "${{ matrix.target.duration }}"
