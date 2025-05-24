@@ -5,7 +5,10 @@ console.log('[MSW Setup] Running setup file...')
 
 const server = setupServer(
   rest.post('http://localhost:3000/api/submit', (req, res, ctx) =>
-    res(ctx.json({ message: 'Code executed successfully!', result: 'Mocked response' }))
+    res(
+      ctx.status(200),
+      ctx.json({ message: 'Code executed successfully!', result: 'Mocked response' })
+    )
   )
 )
 

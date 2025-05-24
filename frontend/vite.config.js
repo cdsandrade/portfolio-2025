@@ -17,7 +17,8 @@ export default defineConfig(({ mode }) => {
     test: {
       globals: true,        // optional: use test/expect/etc. without import
       environment: 'jsdom', // simulates DOM for Vue components
-      setupFiles: './tests/setup/msw.js' // optional: mock API setup
+      setupFiles: './tests/setup/msw.js', // optional: mock API setup
+      include: ['tests/unit/**/*.spec.js']
     }
   }
 })
