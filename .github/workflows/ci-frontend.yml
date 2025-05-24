@@ -49,6 +49,12 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Spin up API
+        run: |
+          npm ci
+          npm run start:ci
+        working-directory: ./backend
+
       - name: Spin up service
         run: npm run start:ci
 
@@ -60,3 +66,10 @@ jobs:
 
       # - name: Run Lighthouse CI
       #   run: npm run test:lighthouse || echo "Lighthouse assertions failed"
+
+      - name: Tear down service
+        run: npm run stop
+
+      - name: Tear down API
+        run: npm run stop
+        working-directory: ./backend
