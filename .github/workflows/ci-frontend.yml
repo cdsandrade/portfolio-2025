@@ -46,6 +46,9 @@ jobs:
       - name: Run Vitest
         run: npm run test
 
+      - name: Build project
+        run: npm run build
+
       - name: Spin up service
         run: npm run start:ci
 
