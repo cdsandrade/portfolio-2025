@@ -13,7 +13,29 @@ on:
   #     -'feature/*'
 
 jobs:
-  perf:
+  guard:
+    name: perf guard
+    runs-on: ubuntu-latest
+    outputs:
+      should-run: ${{ steps.set.outputs.should-run }}
+    steps:
+      - name: Check if perf test should run
+        id: set
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }} | grep -E '^backend/src/.*(?<!\.test)\.js$|^backend/tests/perf/|^\.github/workflows/perf\.yml' || true)
+          if [[ -n "$CHANGED" ]]; then
+            echo "Perf tests will run"
+            echo "should-run=true" >> $GITHUB_OUTPUT
+          else
+            echo "No relevant changes"
+            echo "should-run=false" >> $GITHUB_OUTPUT
+          fi
+
+  autocannon:
+    name: run perf tests
+    needs: guard
+    if: needs.guard.outputs.should-run == 'true'
     runs-on: ubuntu-latest
     defaults:
       run:
