@@ -21,7 +21,7 @@ on:
       - 'frontend/tests/**'
 
 env:
-  VITE_PORT: 4173
+  VITE_PORT: 8080
 
 jobs:
   build:
@@ -46,17 +46,28 @@ jobs:
       - name: Run Vitest
         run: npm run test
 
-      - name: Build project
-        run: npm run build
+      # - name: Build project
+      #   run: npm run build
 
-      - name: Spin up API
+      - name: Spin up services
         run: |
-          npm ci
-          npm run start:ci
-        working-directory: ./backend
+          docker compose build
+          docker compose up -d
+          echo "Waiting for service to be ready..."
+          for i in {1..10}; do
+            if curl -s http://localhost:3000/api/health; then
+              echo "Service is up!"
+              exit 0
+            fi
+            echo "Service not ready yet, retrying in 2s..."
+            sleep 2
+          done
+          echo "Service failed to start in time."
+          exit 1
+        working-directory: .
 
-      - name: Spin up service
-        run: npm run start:ci
+      # - name: Spin up service
+      #   run: npm run start:ci
 
       - name: Run Cypress tests
         run: npm run test:e2e:cypress
@@ -67,9 +78,10 @@ jobs:
       # - name: Run Lighthouse CI
       #   run: npm run test:lighthouse || echo "Lighthouse assertions failed"
 
-      - name: Tear down service
-        run: npm run stop
+      - name: Teardown services
+        run: docker compose down
+        working-directory: .
 
-      - name: Tear down API
-        run: npm run stop
-        working-directory: ./backend
+      # - name: Tear down API
+      #   run: npm run stop
+      #   working-directory: ./backend

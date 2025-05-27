@@ -20,10 +20,15 @@ fastify.register(cors, {
   // credentials: true // if you're using cookies or Authorization headers
 })
 
+// Root route for sanity check
+fastify.get('/', async (request, reply) => {
+  reply.code(200).send({ message: 'Hello from Fastify!' })
+})
+
 // Use route aggregator
 fastify.register(require('./routes'))
 
-fastify.listen({ port: 3000 }, (err, address) => {
+fastify.listen({ host: '0.0.0.0', port: 3000 }, (err, address) => {
   if (err) {
     fastify.log.error(err)
     process.exit(1)

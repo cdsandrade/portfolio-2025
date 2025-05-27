@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+
+.vscode/
+cypress/
+test-results/
+tests/
+
+.env*
+*.config.js
+!vite.config.js
+lighthouserc.js
+README.md
+
+.DS_Store
