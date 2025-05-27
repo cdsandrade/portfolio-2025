@@ -10,7 +10,7 @@ test('submits input and shows mocked response', async () => {
   const wrapper = mount(CodeSubmit)
 
   // Simulate user typing
-  await wrapper.find('input').setValue('test input')
+  await wrapper.find('textarea').setValue('test input')
 
   // Simulate button click
   // await wrapper.find('button').trigger('click')

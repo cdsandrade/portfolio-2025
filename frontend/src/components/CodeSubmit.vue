@@ -1,11 +1,17 @@
 <template lang="pug">
 div.container.mt-5
-  h1.text-center Code Submit
-  form(@submit.prevent="submitForm")
-    .mb-3
-      label.form-label(for="input") Input
-      input.form-control(v-model="inputData", id="input")
-    button.btn.btn-primary(type="submit") Submit
+  div.row
+    h1.text-center Code Submit
+    form(@submit.prevent="submitForm")
+      .mb-3
+        //- label.form-label(for="input") Input
+        textarea.form-control(
+          v-model="inputData",
+          id="input",
+          rows="6",
+          placeholder="Enter your code here..."
+        )
+      button.btn.btn-primary(type="submit") Submit
   div.mt-4
     h5 Response:
     pre {{ response }}
@@ -33,3 +39,13 @@ const submitForm = async () => {
   }
 }
 </script>
+
+<style scoped>
+textarea {
+  /* width: 100%; */
+  /* width: 75%; */
+  /* width: 50%; */
+  resize: none;
+  min-height: 150px;
+}
+</style>

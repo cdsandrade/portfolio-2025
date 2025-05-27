@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       port: parseInt(env.VITE_PORT) || 4173
     },
     test: {
-      globals: true,        // optional: use test/expect/etc. without import
+      globals: true, // optional: use test/expect/etc. without import
       environment: 'jsdom', // simulates DOM for Vue components
       setupFiles: './tests/setup/msw.js', // optional: mock API setup
       include: ['tests/unit/**/*.spec.js']
