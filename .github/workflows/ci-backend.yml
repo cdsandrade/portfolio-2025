@@ -1,4 +1,4 @@
-name: CI (backend)
+name: Backend CI
 
 on:
   push:
@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
       - name: Lint
@@ -48,16 +48,15 @@ jobs:
       - name: Build
         run: npm run build --if-present
 
-      - name: Run Unit Tests
+      - name: Run unit tests
         run: npm run test:unit
 
-      - name: Start Service (for Integration Tests)
+      - name: Spin up service
         run: |
-          npm run start:ci
-          sleep 1
+          docker compose up -d --build backend
           echo "Waiting for service to be ready..."
           for i in {1..10}; do
-            if curl -s http://localhost:3000/health; then
+            if curl -s http://localhost:3000/api/health; then
               echo "Service is up!"
               exit 0
             fi
@@ -66,9 +65,11 @@ jobs:
           done
           echo "Service failed to start in time."
           exit 1
+        working-directory: .
 
-      - name: Run Integration Tests
+      - name: Run integration tests
         run: npm run test:integration
 
-      - name: Teardown Service
-        run: npm run stop
+      - name: Teardown service
+        run: docker compose down
+        working-directory: .
