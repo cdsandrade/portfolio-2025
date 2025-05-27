@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+
+scripts/
+tests/
+**/*.test.js
+
+.env*
+*.config.js
+
+.DS_Store
