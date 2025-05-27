@@ -1,8 +1,7 @@
 {
-  "name": "portfolio-2025",
-  "version": "0.0.2",
-  "description": "",
-  "main": "index.js",
+  "name": "portfolio-2025-api",
+  "private": true,
+  "version": "0.1.0",
   "scripts": {
     "dev": "pm2 start ecosystem.config.js --only api --watch",
     "start:ci": "pm2 start ./src/api.js --name api",
@@ -13,8 +12,6 @@
     "test:unit": "tape src/**/*.test.js",
     "test:integration": "tape tests/integration/**/*.test.js"
   },
-  "author": "Chris Andrade <cdsandrade@gmail.com>",
-  "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^11.0.1",
     "ajv-errors": "^3.0.0",
