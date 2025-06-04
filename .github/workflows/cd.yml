@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+      - 'feature/**'
+    paths:
+      - '.github/workflows/cd.yml'
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
+      #     cache: yarn
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          aws-region: eu-west-1
+      # - run: yarn
+      # - run: yarn deploy
+      - run: aws vpc describe-vpcs
