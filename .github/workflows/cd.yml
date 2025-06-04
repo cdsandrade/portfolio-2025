@@ -30,4 +30,4 @@ jobs:
           aws-region: eu-west-1
       # - run: yarn
       # - run: yarn deploy
-      - run: aws vpc describe-vpcs
+      - run: aws ec2 describe-vpcs
