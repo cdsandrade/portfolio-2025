@@ -1,0 +1,52 @@
+name: Provision Infrastructure (Terraform)
+
+on:
+  push:
+    branches:
+      - master
+      - 'feature/**'
+    paths:
+      - '.github/workflows/cd-terraform.yml'
+      - 'infrastructure/**'
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./infrastructure
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS Credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/feature/') }}
+        run: terraform apply -auto-approve tfplan

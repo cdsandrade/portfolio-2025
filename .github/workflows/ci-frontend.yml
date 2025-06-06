@@ -26,12 +26,25 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      NAMESPACE: dev
+
     defaults:
       run:
         shell: bash
         working-directory: ./frontend
 
     steps:
+      - name: Set version
+        id: version
+        run: |
+          COMMIT=$(git rev-parse --short HEAD)
+          VERSION="0.0.0-${GITHUB_REF##*/}-$COMMIT"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -85,3 +98,19 @@ jobs:
       # - name: Tear down API
       #   run: npm run stop
       #   working-directory: ./backend
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push Frontend Image
+        run: |
+          echo "VITE_APP_VERSION=$VERSION" > ./.env.production.local
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/portfolio-2025-webapp:$VERSION .
+          docker push ${{ steps.login-ecr.outputs.registry }}/portfolio-2025-webapp:$VERSION

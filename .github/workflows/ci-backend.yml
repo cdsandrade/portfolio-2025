@@ -20,6 +20,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+      NAMESPACE: dev
+
     defaults:
       run:
         shell: bash
@@ -31,6 +36,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+      - name: Set version
+        id: version
+        run: |
+          COMMIT=$(git rev-parse --short HEAD)
+          VERSION="0.0.0-${GITHUB_REF##*/}-$COMMIT"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION"
+
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -73,3 +86,18 @@ jobs:
       - name: Teardown service
         run: docker compose down
         working-directory: .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push API Image
+        run: |
+          docker build -t ${{ steps.login-ecr.outputs.registry }}/portfolio-2025-api:$VERSION .
+          docker push ${{ steps.login-ecr.outputs.registry }}/portfolio-2025-api:$VERSION
