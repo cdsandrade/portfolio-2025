@@ -27,14 +27,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_REGION: us-east-1
-      NAMESPACE: dev
-
     defaults:
       run:
         shell: bash
         working-directory: ./frontend
+
+    env:
+      AWS_REGION: us-east-1
+      NAMESPACE: dev
+
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Set version
@@ -44,6 +48,7 @@ jobs:
           VERSION="0.0.0-${GITHUB_REF##*/}-$COMMIT"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
+        working-directory: .
 
       - name: Checkout
         uses: actions/checkout@v4

@@ -21,18 +21,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_REGION: us-east-1
-      NAMESPACE: dev
-
     defaults:
       run:
         shell: bash
         working-directory: ./backend
 
+    env:
+      AWS_REGION: us-east-1
+      NAMESPACE: dev
+
+    permissions:
+      id-token: write
+      contents: read
+
     strategy:
       matrix:
-        node-version: [ 18.x, 20.x, 22.x ]
+        node-version: [ 18.x, 20.x, 22.x, 24.x ]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -43,6 +47,7 @@ jobs:
           VERSION="0.0.0-${GITHUB_REF##*/}-$COMMIT"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
+        working-directory: .
 
       - name: Checkout
         uses: actions/checkout@v4
