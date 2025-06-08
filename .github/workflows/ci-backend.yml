@@ -40,6 +40,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set version
         id: version
         run: |
@@ -47,10 +50,7 @@ jobs:
           VERSION="0.0.0-${GITHUB_REF##*/}-$COMMIT"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "::set-output name=version::$VERSION"
-        working-directory: .
-
-      - name: Checkout
-        uses: actions/checkout@v4
+        # working-directory: .
 
       - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
@@ -93,9 +93,9 @@ jobs:
         working-directory: .
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
